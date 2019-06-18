@@ -28,34 +28,42 @@ const calculatePlayTime = (tracks) => {
 class Playlist extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       favorite: false
     };
   }
-  
 
+  onFavoriteClick = (trackId) => {
+    console.log(trackId);
 
-  
+    let updatedTracks = this.props.tracks;
+    updatedTracks[trackId].favorite = true;
+
+    this.setState({ tracks: updatedTracks });
+  }
+
   render() {
-    const tracks = props.tracks;
+    const tracks = this.props.tracks;
     const trackCount = tracks.length;
     const playtime = calculatePlayTime(tracks);
     const trackElements = tracks.map((track, i) => {
-      // We use "spread syntax" here to pass in all the properties of 
-      // the variable 'track' as props. Go look it up!
+
       return (
         <Track
           key={track.id}
+          favorite={false}
+          onFavoriteClickCallback={this.onFavoriteClick}
+          trackID={track.id}
           {...track}
         />
       );
     });
 
-
+    console.log(trackElements)
     return (
       <div className="playlist">
-        <h2>{props.side} Playlist</h2>
+        <h2>{this.props.side} Playlist</h2>
         <p>
           {trackCount} tracks - {playtime}
         </p>
@@ -63,6 +71,7 @@ class Playlist extends React.Component {
           {trackElements}
         </ul>
       </div>
+
     );
   }
 }
